@@ -1,0 +1,14 @@
+Figured out how to run WiFi and 3G/4G at the same time on Android. 
+
+1. Szymon's Barnacle app doesn't seem to work on the Galaxy Nexus for strange reasons. For starters, the card doesn't even go into ad-hoc mode, so all bets are off. 
+
+2. WiFi Direct is flaky.
+
+3. Turning on WiFi disables 3G. 
+
+4. So now, we basically run WiFi under the Android hood by running :
+
+1. wpa_supplicant -iwlan0 -c/sdcard/wpa_supplicant.conf -d
+2. dhcpd wlan0
+
+where /sdcard/wpa_supplicant.conf is included in this folder as a sample. 
