@@ -9,6 +9,26 @@ Figured out how to run WiFi and 3G/4G at the same time on Android.
 4. So now, we basically run WiFi under the Android hood by running :
 
 1. wpa_supplicant -iwlan0 -c/sdcard/wpa_supplicant.conf -d
-2. dhcpd wlan0
+2. dhcpcd wlan0
 
 where /sdcard/wpa_supplicant.conf is included in this folder as a sample. 
+
+Updates in the evening :
+
+-------------
+
+The dhcpd and wpa_supplicant are the Android aspects of it. These are the clients . You need some sort of a server to send out the reference broadcasts. Logically, this should be the Access Point in a managed network.
+
+So the next question is how you get an Access Point to send out these broadcasts ? You can't really send out broadcasts on a WiFi router, at least not to my knowledge. So the next best solution is to turn a conventional Linux laptop into an Access Point.
+
+The solution to that is hostapd (Host Access Point Daemon). 
+
+http://linuxwireless.org/en/users/Documentation/hostapd
+
+After this, you just setup the appropriate IP addresses on the laptop (the server) and the phones (clients) and you are ready to roll. 
+
+If you really want to, you can run a dhcp server as well. Here are the details :
+
+http://nims11.wordpress.com/2012/04/27/hostapd-the-linux-way-to-create-virtual-wifi-access-point/
+
+As a total aside, dhcpd and dhcpcd are two very different things. 
