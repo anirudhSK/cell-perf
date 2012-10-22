@@ -88,6 +88,16 @@ void Socket::bind_to_device( const std::string & name ) const
   }
 }
 
+void Socket::enable_broadcast() const
+{
+  int val=1;
+  if ( setsockopt( sock, SOL_SOCKET, SO_BROADCAST, &val, sizeof(val) ) < 0 ) {
+    fprintf( stderr, "Error setting broadcast option");
+    perror( "setsockopt SO_BROADCAST" );
+    exit( 1 );
+  }
+}
+
 Socket::Packet Socket::recv( void ) const
 {
   /* data structure to receive timestamp, source address, and payload */
