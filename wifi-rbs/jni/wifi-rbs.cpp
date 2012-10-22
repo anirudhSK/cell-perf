@@ -1,7 +1,7 @@
 #include"socket.hh"
 #include<sys/time.h>
 /* Receive broadcasts on wlan0 for RBS sync */
-int main(int argc, char **argv)  {
+int main()  {
  /* Get current timeStamp */
  struct timeval timeStamp;
  gettimeofday(&timeStamp,NULL);
