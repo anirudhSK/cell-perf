@@ -21,6 +21,7 @@ int main()  {
  /* Create wifi socket */
  Socket wifi_socket;
  Socket::Address wifi_addr( "192.168.5.2", 9000 );
+ wifi_socket.bind(wifi_addr);
  wifi_socket.bind_to_device("wlan0");
 
  /* Allow it to receive broadcast packets*/
@@ -30,7 +31,7 @@ int main()  {
  while(1) {
   Socket::Packet sync_pkt=wifi_socket.recv();
   uint64_t ts=sync_pkt.timestamp;
-  fprintf(log_handle,"Received sync packet @ %lu \n",ts);  
+  fprintf(log_handle,"Received packet seq num %ld @ %lu \n",*(uint64_t *)sync_pkt.payload.data(),ts);  
  } 
  
  return 0;
