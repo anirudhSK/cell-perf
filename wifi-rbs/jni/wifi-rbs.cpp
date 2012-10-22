@@ -1,0 +1,37 @@
+#include"socket.hh"
+#include<sys/time.h>
+/* Receive broadcasts on wlan0 for RBS sync */
+int main(int argc, char **argv)  {
+ /* Get current timeStamp */
+ struct timeval timeStamp;
+ gettimeofday(&timeStamp,NULL);
+
+ /* Create log file */
+ char fileName[100];
+#ifdef PC
+ sprintf(fileName,"../../wifi-rbs-%ld.txt", (long)timeStamp.tv_sec);
+#else
+ sprintf(fileName,"/mnt/sdcard/wifi-rbs-%ld.txt", (long)timeStamp.tv_sec);
+#endif
+
+ /* Open file for logging */
+ FILE * log_handle;
+ log_handle=fopen(fileName,"w");
+
+ /* Create wifi socket */
+ Socket wifi_socket;
+ Socket::Address wifi_addr( "192.168.5.2", 9000 );
+ wifi_socket.bind_to_device("wlan0");
+
+ /* Allow it to receive broadcast packets*/
+ wifi_socket.enable_broadcast();
+
+ /* now receive and log every packet */
+ while(1) {
+  Socket::Packet sync_pkt=wifi_socket.recv();
+  uint64_t ts=sync_pkt.timestamp;
+  fprintf(log_handle,"Received sync packet @ %lu \n",ts);  
+ } 
+ 
+ return 0;
+}
