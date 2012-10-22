@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "wifi-rbs/jni/socket.hh"
+#include "socket.hh"
 
 using namespace std;
 
@@ -45,7 +45,7 @@ Socket::Socket()
 
   /* Ask for timestamps */
   int ts_opt = 1;
-  if ( setsockopt( sock, SOL_SOCKET, SO_TIMESTAMPNS, &ts_opt, sizeof( ts_opt ) )
+  if ( setsockopt( sock, SOL_SOCKET, SO_TIMESTAMP, &ts_opt, sizeof( ts_opt ) )
        < 0 ) {
     perror( "setsockopt" );
     exit( 1 );
