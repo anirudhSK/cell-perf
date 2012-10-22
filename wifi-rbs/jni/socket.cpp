@@ -135,11 +135,11 @@ Socket::Packet Socket::recv( void ) const
   struct cmsghdr *ts_hdr = CMSG_FIRSTHDR( &header );
   assert( ts_hdr );
   assert( ts_hdr->cmsg_level == SOL_SOCKET );
-  assert( ts_hdr->cmsg_type == SO_TIMESTAMPNS );
+  assert( ts_hdr->cmsg_type == SO_TIMESTAMP );
 
   return Socket::Packet( Socket::Address( remote_addr ),
 			 string( msg_payload, received_len ),
-			 *(struct timespec *)CMSG_DATA( ts_hdr ) );
+			 *(struct timeval *)CMSG_DATA( ts_hdr ) );
 }
 
 uint64_t Socket::timestamp( void )
