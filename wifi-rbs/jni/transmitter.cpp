@@ -24,7 +24,7 @@ int main() {
    last_time=the_time;
   }
   else {
-   usleep(last_time + 10e6 - the_time);
+   usleep((last_time + 10e6 - the_time)/(1.0e3)); /* ns to us conversion */
   }
  }
 }
