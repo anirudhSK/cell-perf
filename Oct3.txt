@@ -8,7 +8,7 @@ Figured out how to run WiFi and 3G/4G at the same time on Android.
 
 4. So now, we basically run WiFi under the Android hood by running :
 
-1. wpa_supplicant -iwlan0 -c/sdcard/wpa_supplicant.conf -d
+1. wpa_supplicant -iwlan0 -c/sdcard/wpa_supplicant.conf -B
 2. dhcpcd wlan0
 
 where /sdcard/wpa_supplicant.conf is included in this folder as a sample. 
