@@ -1,0 +1,42 @@
+Oct  23 2012 :
+
+1. So functionally RBS broadcast seems to work except that for extended periods of time either of the phones seems to blank out without getting packets. I don't have any idea what is going on there. Maybe the wifi driver is just plain crappy or it goes into power save mode or something ? I don't know. I am going to do one clean slate reinstall of the factory image to JellyBean on both phones and see if that fixes things. If not, maybe Shuo's WiFi Direct based solution is probably as good as it gets ? Maybe WiFi Direct puts it into adhoc mode instead of the Infrastructure Mode that I am trying to force on these phones using wpa_supplicant. Which is probably why WiFi Direct works better since adhoc doesn't have these crazy PSM techniques. 
+
+Oh well, I remember now why JellyBean won't work . Rooting doesn't really work for the GNex on JellyBean. Or no one has found out how to do it yet.    
+
+Another hypothesis :
+
+1. Things are actually fine with the phone that has the 'A' wallpaper. It's the other phone, i.e. the one without any wallpaper that is the problem phone. I am not sure what is so distinct or unique about the problem phone but that is something we really need to figure out. There is some credibility to this hypothesis. 
+
+Another possibility :
+
+How can you turn off the Power Save Mode in WiFi altogether ? That might help us fix some issues. It might not as well, but it's worth a try. 
+
+Next step :
+
+What if you turn off 4G and run WiFi just like Android expects you to ? Maybe that ll fix things and the connection won't keep dropping in and out all the time ? 
+Yeah, for this I need to run a dhcp server on the host access point, otherwise Android keeps trying to drop out and connect back in. 
+
+So latest updated hypothesis :
+
+1. My way of connecting using wpa_supplicant isn't a great idea because it seems to mess with PSM. Let's connect the standard Android way with ONLY WiFi turned on and no 3G at all. Then let's see what RBS accuracy we can get. Then let's figure out how to make these two co-exist. 
+
+Ok, the vanilla Android way of doing things using the WiFi menu seems to yield better results. There isn't this wide disparity between phone "A" and unnamed phone but there are significant outages on both phones. I even have a DHCP server setup along with hostapd to make it look completely seamless to Android.  
+
+Ok, so vanilla Android does work better but the stupid issue is that phone screen blanking out, aggressive sleeps etc keep the wifi asleep all the time. Maybe that's why WiFi on a phone sucks, it's sleeping all the time. 
+
+Hypothesis at 4:20 pm :
+
+Vanilla Android method works better, but phones still "blank out" ocassionally. However, we can't use the Vanilla Android method unless we find a way for it to coexist with 4G, which is why we started using wpa_supplicant in the first place. 
+
+Ok, found ONE difference between the normal "A" phone and the other non-descript phone. The second phone had the default Android activity screen timeout , much smaller than the aggressive value of 10 minutes per activity on the first "A" phone. Maybe this screen activity timeout was the reason for the differences. ??
+
+Also the second phone had a much smaller brightness than the first. 
+
+Anyway, after equalizing these differences, both phones seem to have similar >95% packet delivery rates at 100Hz. Hopefully, that's the ideal limit on how much you can synchronise these phones together. Let's plot the graphs and see how they look. 
+
+Ok, the first set of results over about 200K packets is in the clock-diff.png file in this folder. I am yet to measure the skew precisely, but one annoying feature of this graph is that both phones blank out for no reason at some instants of time. It could be the phone's fault or it might be the laptop's mistake (maybe hostapd on the laptop is going to sleep). But in either case, this graph is a LOT better than earlier when phones asymmetrically blanked out and blanked out way more often. The fact that they blank out somewhat symmetrically suggests that the problem may be with the laptop and not the phones.
+
+But the good news :
+
+If you run the laptop as the AP along with a DHCP server on it, and connect to the AP using Android's standard menu driven methods, the results are pretty encouraging. Definitely seem better than using wpa_supplicant directly. THe con is that this can't co exist happily with 4G. 
