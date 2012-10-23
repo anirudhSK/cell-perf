@@ -40,3 +40,8 @@ Ok, the first set of results over about 200K packets is in the clock-diff.png fi
 But the good news :
 
 If you run the laptop as the AP along with a DHCP server on it, and connect to the AP using Android's standard menu driven methods, the results are pretty encouraging. Definitely seem better than using wpa_supplicant directly. THe con is that this can't co exist happily with 4G. 
+
+Ok, so the second plot clock-skew.png shows the clock skew as a function of packet number. The constant offset is around 400 ms, but more importantly the variability is at least 20 to 30 ms, which is of the same or worse order of magnitude as what Shuo got with the WiFi direct experiments. And this is sort of the best Android has to offer, in the sense that "my under the hood wpa_supplicant method can't be better than this". If Android's best doesn't give us better than 20-30 ms, maybe we should :
+
+ 1. Try and reduce packet rate to 10Hz like Shuo suggested.
+ 2. Do this using the kernel driver to prevent batching of any form. 
