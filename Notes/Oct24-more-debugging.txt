@@ -28,3 +28,7 @@ I still don't know why the phone blanks out every now and then though. Maybe it'
 Next steps :
 
 1. See if the 10ms skew can be reduced. Try averaging etc, or just timestamp it in the device driver itself, that might fix things for good.  
+
+Next step :
+ - Trying to reduce packet rate to 10Hz to see if that does anything at all. 
+ - Ok, it definitely seems to make the band narrower. So, all else being equal, a lower packet rate seems to have a narrower variation band. 10vs100.png has the comparison results. clock-diff-10Hz.png has the results for 10Hz alone. 
