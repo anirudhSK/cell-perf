@@ -1,0 +1,30 @@
+I am rerunning the WiFi experiments to check everything from yesterday. 
+
+The setup : (Android WiFi, not under the hood WiFi) 
+
+1. On laptop : Disable connections to any wifi networks.
+2. Run : sudo hostapd hostapd-rbs.conf in one window
+3. Run : sudo ifconfig wlan0 192.168.5.1 netmask 255.255.255.0
+4. Run : sudo dhcpd wlan0 (ignore the PID message, seems to be harmless)
+5. Connect both Android phones to the rbs ssid
+6. Open a shell on each. Remove old wifi-rbs files from /sdcard
+7. Run rbs on each. 
+8. Run sudo ./transmitter on the laptop
+9. Wait 15 minutes and log data. 
+
+ Things to vary : send a packet at 10 Hz instead of 100 and see what happens. 
+
+End of first experiment for today : 
+
+ Results are in the png file with the filename starting with run2-... . png
+
+1. There is a bit of a clock drift over the 90000 packets (900 seconds).
+2. The clock offsets are all over the place. I have updated yesterday's png file as well, which shows the same effect. Turns out python prints out only 2 decimal places that led to the graph being spuriously quantized yesterday.
+
+End result : There is at least a 10ms variation in clock offsets between the two devices. It could be intrinsic or it could be the WiFi device driver. This confirms Shuo's 10 ms clock variation result as well. The bad news is that plain old AP mode WiFi (used in all my experiments here), doesn't seem any better than using the somewhat flaky and nascent WiFi Direct. 
+
+I still don't know why the phone blanks out every now and then though. Maybe it's some higher level sleep. The blanking isn't visible on run2.png but is visible on the older png file.
+
+Next steps :
+
+1. See if the 10ms skew can be reduced. Try averaging etc, or just timestamp it in the device driver itself, that might fix things for good.  
