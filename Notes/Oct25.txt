@@ -1,0 +1,13 @@
+10:30 am in the morning :
+
+Running one last set of tests, one using 100Hz and the other using 10 Hz to confirm that indeed 100Hz sucks compared to 10Hz for whatever reason. 
+
+Finished running the 100Hz test. Now running the 10Hz test. Hopefully this validates our hypothesis for good now. 
+
+Seems to hold. The results are in 10vs100-3takes.png. I think I am moving on now. 
+
+Next steps :
+
+1. Co-existence, running supplicant in the background messes things up. 
+2. Averaging (simple enough to do) and estimation of sync accuracy.  
+3. Running actual test. 
