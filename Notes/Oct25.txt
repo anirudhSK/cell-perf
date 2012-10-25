@@ -1,4 +1,5 @@
 10:30 am in the morning :
+===================================================
 
 Running one last set of tests, one using 100Hz and the other using 10 Hz to confirm that indeed 100Hz sucks compared to 10Hz for whatever reason. 
 
@@ -6,8 +7,46 @@ Finished running the 100Hz test. Now running the 10Hz test. Hopefully this valid
 
 Seems to hold. The results are in 10vs100-3takes.png. I think I am moving on now. 
 
-Next steps :
+Averaging (simple enough to do) and estimation of sync accuracy.  
+=====================================================
 
-1. Co-existence, running supplicant in the background messes things up. 
-2. Averaging (simple enough to do) and estimation of sync accuracy.  
-3. Running actual test. 
+Averaging will definitely improve things. At this point, the variation in clock offsets is about 10ms when we run it at 100Hz and about 1ms when we run it at 10Hz. This can be definitely brought down by averaging, but so long as the clock sync is close to 1ms, I think we are ok, or do we need much finer syncing ? 
+
+Next step :
+======================================================
+
+Co-existence, running supplicant in the background messes things up. 
+
+Now trying to run it with supplicant, i.e. under the hood as opposed to vanilla Android. 
+
+First starting with 10Hz (because it was left at this earlier). Let's see if it works reliably.  
+
+Ah, maybe, just maybe, killing the shell i.e simply running wpa_supplicant and exiting from the shell was the issue all along. Let's see. 
+ 
+Experiment started at 12:28 ended at 12:38. 
+
+Ok, so, fingers crossed, but things _seem_ to work at 10Hz under the hood now _if_ I log into the shell and run it. So, I guess I shouldn't log out and simply run it inside adb.
+
+Now (12:55 to 1:07) running the 100Hz experiment under the same setup. 
+
+Seems to work overall with 100Hz as well. Let's see if it holds up on a second run. There is a sudden jump in the clock offsets though at one point. 
+
+One more experiment @100 Hz :13:15 to something like 13:26 I guess. 
+
+Ok, that didn't work. I got completely blank files. So I am really not sure what the hell happened there. 
+
+Now doing, a repeat of the same experiment at 13:31. I am hoping the reason is something as dumb as I did not start the transmitter, but I suspect not. 
+
+Ok, this worked great all of a sudden. I am going to safely assume that the transmitter wasn't ever turned on in the first place in the previous run.
+
+This also confirms again that 10Hz is better than 100. 
+
+Couple of explanations for why it's working all of a sudden now :
+
+1. Probably, we were spawning off way too many wpa_supplicants by doing one for each run. This was causing some random issues which caused the wifi to blank out. 
+2. Now, we run supplicant and dhcp once for the entire run and at the point it connects to the wifi . After this it runs more or less on it's own. 
+
+Takeaways from all of this :
+
+1. Run supplicant and dhcpd exactly once. 
+2. Keep hostapd output open on the laptop for debugging. 
