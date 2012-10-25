@@ -50,3 +50,11 @@ Takeaways from all of this :
 
 1. Run supplicant and dhcpd exactly once. 
 2. Keep hostapd output open on the laptop for debugging. 
+
+Running one long experiment before I go for lunch 
+
+Ok, it seems to have gotten about 400 seconds worth of packets and then both phones simply shut off for no reason. So it's not clear to me what is happening with this. Sometimes it works and sometimes it doesn't. 
+
+Anyway, this method should probably work for short durations. If it fails, then we re-run the experiment again. Simple enough solution.
+
+Maybe this correlates with the display going to sleep, which is why it happens at the same time on both phones ? Check this hypothesis ? It might help explain the das experiments as well. 
