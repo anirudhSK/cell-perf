@@ -13,7 +13,7 @@ using namespace std;
 int main( int argc, char *argv[] )
 {
   if ( argc != 1 && argc != 6 ) {
-    fprintf( stderr, "Usage: %s [RELIABLE_IP RELIABLE_DEV TEST_IP TEST_DEV SERVER_IP]\n",
+    fprintf( stderr, "Usage: %s [FEEDBACK_IP FEEDBACK_DEV DATA_IP DATA_DEV SERVER_IP]\n",
 	     argv[ 0 ]);
     exit( 1 );
   }
@@ -33,22 +33,22 @@ int main( int argc, char *argv[] )
   } else { /* client */
     server = false;
     
-    const char *reliable_ip = argv[ 1 ];
-    const char *reliable_dev = argv[ 2 ];
+    const char *feedback_ip = argv[ 1 ];
+    const char *feedback_dev = argv[ 2 ];
 
-    const char *test_ip = argv[ 3 ];
-    const char *test_dev = argv[ 4 ];
+    const char *data_ip = argv[ 3 ];
+    const char *data_dev = argv[ 4 ];
 
     const char *server_ip = argv[ 5 ];
 
     sender_id = ( (int)(ts/1e9) );
 
-    data_socket.bind( Socket::Address( test_ip, 9003 ) );
-    data_socket.bind_to_device( test_dev );
+    data_socket.bind( Socket::Address( data_ip, 9003 ) );
+    data_socket.bind_to_device( data_dev );
     remote_data_address = Socket::Address( server_ip, 9001 );
 
-    feedback_socket.bind( Socket::Address( reliable_ip, 9004 ) );
-    feedback_socket.bind_to_device( reliable_dev );
+    feedback_socket.bind( Socket::Address( feedback_ip, 9004 ) );
+    feedback_socket.bind_to_device( feedback_dev );
     remote_feedback_address = Socket::Address( server_ip, 9002 );
   }
 
