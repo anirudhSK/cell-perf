@@ -63,6 +63,9 @@ int main( int argc, char *argv[] )
   saturatr.set_acker( &acker );
   acker.set_saturatr( &saturatr );
 
+  saturatr.LOWER_RTT = 0.75;
+  saturatr.UPPER_RTT = 3.0;
+
   while ( 1 ) {
     fflush( NULL );
 
@@ -86,7 +89,7 @@ int main( int argc, char *argv[] )
 
     timeout.tv_sec = next_transmission_delay / 1000000000;
     timeout.tv_nsec = next_transmission_delay % 1000000000;
-    ppoll( poll_fds, 2, &timeout, NULL );
+    poll( poll_fds, 2, timeout.tv_sec*1000+1000000*timeout.tv_nsec);/* timeout in ms*/
 
     if ( poll_fds[ 0 ].revents & POLLIN ) {
       acker.recv();

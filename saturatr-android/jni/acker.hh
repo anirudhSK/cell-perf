@@ -42,8 +42,8 @@ public:
 
   uint64_t wait_time( void ) const;
 
-  Acker( const Acker & ) = delete;
-  const Acker & operator=( const Acker & ) = delete;
+  Acker( const Acker & ) ;
+  const Acker & operator=( const Acker & ) ;
 };
 
 #endif

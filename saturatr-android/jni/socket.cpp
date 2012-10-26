@@ -45,7 +45,7 @@ Socket::Socket()
 
   /* Ask for timestamps */
   int ts_opt = 1;
-  if ( setsockopt( sock, SOL_SOCKET, SO_TIMESTAMPNS, &ts_opt, sizeof( ts_opt ) )
+  if ( setsockopt( sock, SOL_SOCKET, SO_TIMESTAMP, &ts_opt, sizeof( ts_opt ) )
        < 0 ) {
     perror( "setsockopt" );
     exit( 1 );
@@ -129,7 +129,7 @@ Socket::Packet Socket::recv( void ) const
 
   return Socket::Packet( Socket::Address( remote_addr ),
 			 string( msg_payload, received_len ),
-			 *(struct timespec *)CMSG_DATA( ts_hdr ) );
+			 *(struct timeval *)CMSG_DATA( ts_hdr ) );
 }
 
 uint64_t Socket::timestamp( void )
