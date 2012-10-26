@@ -31,8 +31,8 @@ int main()  {
  while(1) {
   fflush(log_handle);
   Socket::Packet sync_pkt=wifi_socket.recv();
-  long double ts=sync_pkt.timestamp; /* timestamp in secs */
-  fprintf(log_handle,"Received packet seq num %llu @ %lf \n",*(uint64_t *)sync_pkt.payload.data(),ts);  
+  uint64_t ts=sync_pkt.timestamp; /* timestamp in nano-secs */
+  fprintf(log_handle,"Received packet seq num %llu @ %llu \n",*(uint64_t *)sync_pkt.payload.data(),ts);  
  } 
  
  return 0;

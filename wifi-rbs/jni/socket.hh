@@ -31,14 +31,14 @@ public:
   public:
     Address addr;
     std::string payload;
-    long double timestamp;
+    uint64_t timestamp;
 
     Packet( const Address &s_addr, const std::string &s_payload )
-      : addr( s_addr ), payload( s_payload ), timestamp( 0.0 )
+      : addr( s_addr ), payload( s_payload ), timestamp( 0 )
     {}
 
     Packet( const Address &s_addr, const std::string &s_payload, const struct timeval &tv )
-      : addr( s_addr ), payload( s_payload ), timestamp( tv.tv_sec + tv.tv_usec/1.0e6 )
+      : addr( s_addr ), payload( s_payload ), timestamp( tv.tv_sec * ((uint64_t)1000000000) + tv.tv_usec*(uint64_t)1000 )
     {}
   };
 
