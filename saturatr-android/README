@@ -1,0 +1,6 @@
+Saturatr implementation for Android. The idea is to saturate the downlink and then run some measurements to see
+how the packet arrivals are scheduled across three or four different phones. Hopefully with clock sync down to
+1ms we should have a clean idea of what is going on wrt the downlink.
+
+We don't need to saturate the uplink cause we can't measure that anyway.
+
