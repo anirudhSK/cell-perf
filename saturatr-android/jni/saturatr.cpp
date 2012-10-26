@@ -70,8 +70,10 @@ int main( int argc, char *argv[] )
     fflush( NULL );
 
     /* possibly send packet */
-    saturatr.tick();
-    acker.tick();
+    if (server)     saturatr.tick();
+    else            acker.tick();
+    /* fire off either the saturatr or the acker, never both,
+       This is so that you can run this on only 1 phone */ 
     
     /* wait for incoming packet OR expiry of timer */
     struct pollfd poll_fds[ 2 ];
