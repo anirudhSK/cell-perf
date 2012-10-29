@@ -125,7 +125,7 @@ Socket::Packet Socket::recv( void ) const
   struct cmsghdr *ts_hdr = CMSG_FIRSTHDR( &header );
   assert( ts_hdr );
   assert( ts_hdr->cmsg_level == SOL_SOCKET );
-  assert( ts_hdr->cmsg_type == SO_TIMESTAMPNS );
+  assert( ts_hdr->cmsg_type == SO_TIMESTAMP );
 
   return Socket::Packet( Socket::Address( remote_addr ),
 			 string( msg_payload, received_len ),
@@ -141,6 +141,6 @@ uint64_t Socket::timestamp( void )
     exit( 1 );
   }
 
-  uint64_t ret = ts.tv_sec * 1000000000 + ts.tv_nsec;
+  uint64_t ret = ts.tv_sec * ((uint64_t) 1000000000) + ts.tv_nsec;
   return ret;
 }

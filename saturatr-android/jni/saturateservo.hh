@@ -54,8 +54,6 @@ public:
 
   void tick( void );
 
-  void set_acker( Acker * const s_acker ) { _acker = s_acker; }
-
   void set_remote( const Socket::Address & s_remote ) { _remote = s_remote; }
 
   SaturateServo( const SaturateServo & ) ;

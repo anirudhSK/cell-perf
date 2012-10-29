@@ -12,7 +12,6 @@ Acker::Acker( const char *s_name, FILE* log_file_handle, const Socket & s_listen
     _remote( s_remote ),
     _server( s_server ),
     _ack_id( s_ack_id ),
-    _saturatr( NULL ),
     _next_ping_time( Socket::timestamp() ),
     _foreign_id( -1 )
 {}
@@ -28,11 +27,9 @@ void Acker::recv( void )
   double oneway = oneway_ns / 1.e9;
 
   if ( _server ) {
-    if ( _saturatr ) {
       if ( contents->sender_id > _foreign_id ) {
 	_foreign_id = contents->sender_id;
-	_saturatr->set_remote( incoming.addr );
-      }
+	_remote = ( incoming.addr );
     }
 
     if ( _remote == UNKNOWN ) {
@@ -86,7 +83,7 @@ uint64_t Acker::wait_time( void ) const
     return 1000000000;
   }
 
-  int diff = _next_ping_time - Socket::timestamp();
+  int64_t diff = _next_ping_time - Socket::timestamp();
   if ( diff < 0 ) {
     diff = 0;
   }

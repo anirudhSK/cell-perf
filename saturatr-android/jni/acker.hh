@@ -38,8 +38,6 @@ public:
 
   void set_remote( const Socket::Address & s_remote ) { _remote = s_remote; }
 
-  void set_saturatr( SaturateServo * const s_saturatr ) { _saturatr = s_saturatr; }
-
   uint64_t wait_time( void ) const;
 
   Acker( const Acker & ) ;

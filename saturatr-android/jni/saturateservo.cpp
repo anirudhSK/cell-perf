@@ -19,7 +19,6 @@ SaturateServo::SaturateServo( const char * s_name,
     _remote( s_remote ),
     _server( s_server ),
     _send_id( s_send_id ),
-    _acker( NULL ),
     _next_transmission_time( Socket::timestamp() ),
     _foreign_id( -1 ),
     _packets_sent( 0 ),
@@ -42,12 +41,10 @@ void SaturateServo::recv( void )
 
   /* possibly roam */
   if ( _server ) {
-    if ( _acker ) {
       if ( (contents->sender_id > _foreign_id) && (contents->ack_number == -1) ) {
 	_foreign_id = contents->sender_id;
-	_acker->set_remote( incoming.addr );
+	_remote = ( incoming.addr );
       }
-    }
   }
 
   /* process the ack */
