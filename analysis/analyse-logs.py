@@ -12,15 +12,20 @@ phone1_cellular=sys.argv[2]
 phone2_wifi=sys.argv[3]
 phone2_cellular=sys.argv[4]
 # apply clock sync function to the cellular logs
+correction_estimate=0
 def apply_clk_sync(time,clock_sync_function) :
+   global correction_estimate
    # search for time
    start_time=clock_sync_function[2]
    end_time=clock_sync_function[3]  
    for bkt in start_time :
       if ( (time > start_time[bkt]) and (time < end_time[bkt]) ) :
          # bring phone2 back "down" to phone 1
-         return int(time-float(clock_sync_function[0][bkt])/clock_sync_function[1][bkt])
-
+         correction_estimate=float(clock_sync_function[0][bkt])/clock_sync_function[1][bkt]
+         return int(time-correction_estimate)
+   # if it comes here because all else failed
+   print "Applying old estimate here at time",time
+   return int(time-correction_estimate)
 # analyse wifi logs to retrieve the clock syncing function 
 clock_sync_function=clk_sync(phone1_wifi,phone2_wifi)
 # now process cell phone data 
@@ -39,6 +44,6 @@ for line in phone2_cell.readlines() :
 phone1_logs=open("ph1.opt","w");
 phone2_logs=open("ph2.opt","w");
 for ts in phone1_ts : 
-  phone1_logs.write(str(ts)+"\n")
+   phone1_logs.write(str(int(ts/1e3))+"\n")
 for ts in phone2_ts : 
-  phone2_logs.write(str(ts)+"\n")
+   phone2_logs.write(str(int(ts/1e3))+"\n")
