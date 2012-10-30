@@ -12,9 +12,11 @@ using namespace std;
 
 int main( int argc, char *argv[] )
 {
-  if ( argc != 1 && argc != 4 ) {
-    fprintf( stderr, "Usage: %s [IP DEV SERVER_IP]\n",
-	     argv[ 0 ]);
+  if ( argc != 2 && argc != 4 ) {
+    fprintf( stderr, "Usage: %s [DEV SERVER_IP SERVER_PORT] \n \
+                      Usage: %s [SERVER_PORT]\n",
+	     argv[ 0 ],
+             argv[ 0 ]);
     exit( 1 );
   }
 
@@ -26,23 +28,25 @@ int main( int argc, char *argv[] )
   Socket::Address remote_data_address( UNKNOWN ), remote_feedback_address( UNKNOWN );
 
   uint64_t ts=Socket::timestamp();
-  if ( argc == 1 ) { /* server */
+  if ( argc == 2 ) { /* server */
     server = true;
-    data_plus_feedback_socket.bind( Socket::Address( "0.0.0.0", 9001 ) );
+    uint32_t server_port=atoi(argv[ 1 ]);
+    data_plus_feedback_socket.bind( Socket::Address( "0.0.0.0", server_port ) );
   } else { /* client */
     server = false;
     
-    const char *ip = argv[ 1 ];
-    const char *dev = argv[ 2 ];
+    const char *dev = argv[ 1 ];
 
-    const char *server_ip = argv[ 3 ];
+    const char *server_ip = argv[ 2 ];
+
+    uint32_t server_port=atoi(argv[ 3 ]);
 
     sender_id = (ts/1e9);
 
-    data_plus_feedback_socket.bind( Socket::Address( ip, 9002 ) );
+    data_plus_feedback_socket.bind( Socket::Address( "0.0.0.0", 9002 ) );
     data_plus_feedback_socket.bind_to_device( dev );
-    remote_data_address = Socket::Address( server_ip, 9001 );
-    remote_feedback_address = Socket::Address( server_ip, 9001 );
+    remote_data_address = Socket::Address( server_ip, server_port );
+    remote_feedback_address = Socket::Address( server_ip, server_port );
   }
 
   FILE* log_file;
