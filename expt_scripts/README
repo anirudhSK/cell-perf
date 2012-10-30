@@ -1,0 +1,2 @@
+This folder contains helper scripts to help set up a 2 phone TDMA measurement experiment.
+killall.sh is an android shell script cogged from the web, that can kill process by name. 
