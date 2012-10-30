@@ -20,7 +20,7 @@ int main()  {
 
  /* Create wifi socket */
  Socket wifi_socket;
- Socket::Address wifi_addr( "0.0.0.0", 9000 );
+ Socket::Address wifi_addr( "0.0.0.0", 18000 );
  wifi_socket.bind(wifi_addr);
  wifi_socket.bind_to_device("wlan0");
 
