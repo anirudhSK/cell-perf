@@ -47,3 +47,28 @@ for ts in phone1_ts :
    phone1_logs.write(str(int(ts/1e3))+"\n")
 for ts in phone2_ts : 
    phone2_logs.write(str(int(ts/1e3))+"\n")
+
+# compute interarrival PDF
+interarrival_pdf_file=open("ph.pdf","w");
+interarrivals=[]
+combined_ts=phone1_ts+phone2_ts;
+combined_ts.sort()
+last_ts=-1
+for ts in combined_ts :
+    if (last_ts==-1) :
+        last_ts=ts
+        continue
+    else :
+        interarrivals.append(int(ts-last_ts)/1e6)
+        last_ts=ts
+
+# plot pdf
+interarrival_pdf = {}
+for times in interarrivals :
+   bkt=int(times)
+   if bkt in interarrival_pdf :
+      interarrival_pdf[bkt]=interarrival_pdf[bkt]+1
+   else :
+      interarrival_pdf[bkt]=0
+for bkt in interarrival_pdf :
+    interarrival_pdf_file.write(str(bkt)+"\t"+str(interarrival_pdf[bkt]) +"\n")
