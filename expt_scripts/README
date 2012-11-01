@@ -1,2 +1,11 @@
 This folder contains helper scripts to help set up a 2 phone TDMA measurement experiment.
 killall.sh is an android shell script cogged from the web, that can kill process by name. 
+
+Clean experiments :
+10Hz-Nov1-Take2
+10Hz-Nov1-Take1
+10Hz-Oct30-Take3
+
+These three have 10Hz WiFi, somewhat reasonable cellular data, other apps were turned off on the laptop (like dropbox) and the WiFi did not blank out for sufficiently long. 
+
+The key to getting this to work seems to be rebooting the phones whenever the wifi starts dropping packets. 
