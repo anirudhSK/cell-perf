@@ -17,6 +17,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := saturatr
 LOCAL_SRC_FILES := socket.cpp acker.cpp  payload.cpp  saturateservo.cpp  saturatr.cpp 
+LOCAL_CFLAGS    := -DANDROID_SAT
 
-include $(BUILD_EXECUTABLE)
+include $(BUILD_SHARED_LIBRARY)
 

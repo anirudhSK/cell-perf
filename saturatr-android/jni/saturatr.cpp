@@ -9,10 +9,28 @@
 #include "saturateservo.hh"
 
 using namespace std;
-
-int main( int argc, char *argv[] )
+#ifdef ANDROID_SAT
+#include <jni.h>
+int mainFunction( int argc, const char *argv[]) ;
+JNIEXPORT void JNICALL Java_Saturatr_Android_runClient( JNIEnv* env, jobject thiz, jstring dev, jstring server_ip, jstring server_port, jstring direction)
 {
-  if ( argc != 2 && argc != 4 ) {
+   const char** argv=(const char**)malloc(sizeof(char*)*10); // ANIRUDH: Mod here
+   argv[0]="saturatr";
+   argv[1] = (env)->GetStringUTFChars(dev, 0);
+   argv[2] = (env)->GetStringUTFChars(server_ip, 0);
+   argv[3] = (env)->GetStringUTFChars(server_port, 0);
+   argv[4] = (env)->GetStringUTFChars(direction, 0);
+   mainFunction(5,argv);
+}
+#endif
+
+#ifdef ANDROID_SAT
+int mainFunction( int argc, const char *argv[]) 
+#elif PC_SAT
+int main( int argc, char *argv[] )
+#endif
+{
+  if ( argc != 3 && argc != 5 ) {
     fprintf( stderr, " Usage: %s [DEV SERVER_IP SERVER_PORT DIRECTION:1 for downlink ] \n Usage: %s [SERVER_PORT DIRECTION:1 for downlink]\n",
 	     argv[ 0 ],
              argv[ 0 ]);
@@ -42,7 +60,7 @@ int main( int argc, char *argv[] )
 
     uint32_t server_port=atoi(argv[ 3 ]);
 
-    _downlink = (atoi(argv[ 2 ])==1) ? true : false ;
+    _downlink = (atoi(argv[ 4 ])==1) ? true : false ;
 
     sender_id = (ts/1e9);
 
