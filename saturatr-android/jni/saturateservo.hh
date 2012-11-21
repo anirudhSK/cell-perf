@@ -19,8 +19,6 @@ private:
   const bool _server;
   const int _send_id;
 
-  Acker *_acker;
-
   uint64_t _next_transmission_time;
 
   static const int _transmission_interval = 1000 * 1000 * 1000;

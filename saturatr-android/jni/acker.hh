@@ -17,8 +17,6 @@ private:
   const bool _server;
   const int _ack_id;
 
-  SaturateServo *_saturatr;
-
   uint64_t _next_ping_time;
 
   static const int _ping_interval = 1000000000;

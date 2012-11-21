@@ -13,8 +13,7 @@ using namespace std;
 int main( int argc, char *argv[] )
 {
   if ( argc != 2 && argc != 4 ) {
-    fprintf( stderr, "Usage: %s [DEV SERVER_IP SERVER_PORT] \n \
-                      Usage: %s [SERVER_PORT]\n",
+    fprintf( stderr, " Usage: %s [DEV SERVER_IP SERVER_PORT DIRECTION:1 for downlink ] \n Usage: %s [SERVER_PORT DIRECTION:1 for downlink]\n",
 	     argv[ 0 ],
              argv[ 0 ]);
     exit( 1 );
@@ -22,16 +21,18 @@ int main( int argc, char *argv[] )
 
   Socket data_plus_feedback_socket;
   bool server;
+  bool _downlink;
 
   uint32_t sender_id = getpid();
 
   Socket::Address remote_data_address( UNKNOWN ), remote_feedback_address( UNKNOWN );
 
   uint64_t ts=Socket::timestamp();
-  if ( argc == 2 ) { /* server */
+  if ( argc == 3 ) { /* server */
     server = true;
     uint32_t server_port=atoi(argv[ 1 ]);
     data_plus_feedback_socket.bind( Socket::Address( "0.0.0.0", server_port ) );
+    _downlink = (atoi(argv[ 2 ])==1) ? true : false ;
   } else { /* client */
     server = false;
     
@@ -40,6 +41,8 @@ int main( int argc, char *argv[] )
     const char *server_ip = argv[ 2 ];
 
     uint32_t server_port=atoi(argv[ 3 ]);
+
+    _downlink = (atoi(argv[ 2 ])==1) ? true : false ;
 
     sender_id = (ts/1e9);
 
@@ -65,8 +68,14 @@ int main( int argc, char *argv[] )
     fflush( NULL );
 
     /* possibly send packet */
-    if (server)     saturatr.tick();
-    else            acker.tick();
+    if (_downlink) {
+     if (server)     saturatr.tick();
+     else            acker.tick();
+    }
+    else {
+     if (server)     acker.tick();
+     else            saturatr.tick();
+    }
     /* fire off either the saturatr or the acker, never both,
        This is so that you can run this on only 1 phone */ 
     
@@ -75,7 +84,6 @@ int main( int argc, char *argv[] )
     poll_fds[ 0 ].fd = data_plus_feedback_socket.get_sock();
     poll_fds[ 0 ].events = POLLIN;
 
-    struct timespec timeout;
     uint64_t next_transmission_delay = server ? saturatr.wait_time() : acker.wait_time() ;
 
     if ( next_transmission_delay == 0 ) {
@@ -86,8 +94,14 @@ int main( int argc, char *argv[] )
     poll( poll_fds, 1, timeout_in_ms);/* timeout in ms*/
 
     if ( poll_fds[ 0 ].revents & POLLIN ) {
+     if(_downlink) {
       if (server) saturatr.recv() ;
       else        acker.recv();
+     }
+     else {
+      if (server) acker.recv() ;
+      else        saturatr.recv();
+     }
     }
   }
 }
