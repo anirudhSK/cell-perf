@@ -29,7 +29,7 @@ public class ServerLocator  {
 				bestServer=serverList[i];
 			}
 		}
-		Log.d("Saturatr","min latency is "+Double.toString(minLatency)+ " ms ");
+		Log.d("Saturatr:ServerLocator","min latency is "+Double.toString(minLatency)+ " ms ");
 		return minLatency;
 			
 	}
